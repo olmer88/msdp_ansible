@@ -1,0 +1,13 @@
+- name: create list of users
+  hosts: managed_nodes
+  vars_files: users.yml 
+  tasks:
+  - name: Add users
+    become: yes
+    with_dict: "{{ users }}"
+    user:
+      name: "{{ item.key }}"     
+      password: "{{ item.value | password_hash('sha512') }}"
+      state: present
+      update_password: on_create
+    no_log: yes

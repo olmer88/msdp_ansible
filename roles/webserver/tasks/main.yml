@@ -1,0 +1,26 @@
+- name: install httpd
+  become: yes
+  package:
+    name: httpd
+    state: present
+- name: start httpd
+  become: yes
+  service:
+    name: httpd
+    state: started
+- name: Copy who am I template
+  become: yes
+  template:
+    src: "whoami.html.j2"
+    dest: "/var/www/html/whoami.html"
+    mode: 0444
+  notify:
+    - restart httpd
+- name: Copy second who am I template
+  become: yes
+  template:
+    src: "whoami2.html.j2"
+    dest: "/var/www/html/whoami2.html"
+    mode: 0444
+  notify:
+    - restart httpd

@@ -1,0 +1,4 @@
+- name: create simple webserver
+  hosts: web1, web2
+  roles:
+    - webserver

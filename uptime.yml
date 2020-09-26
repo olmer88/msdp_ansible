@@ -1,0 +1,16 @@
+- name: Make servers uptime report
+  hosts: managed_nodes
+  tasks:
+    - name: Gather uptime information
+      uptime:
+      register: uptime_data
+    - name: Create direcotory for reports
+      file:
+        path: ~/reports
+        state: directory
+      delegate_to: control
+    - name: Create report for each host
+      template:
+        src: "report.txt.j2"
+        dest: "~/reports/{{ansible_hostname}}.txt"
+      delegate_to: control
